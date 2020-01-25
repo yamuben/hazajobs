@@ -1,0 +1,50 @@
+{
+  "name": "hazajobs",
+  "version": "1.0.0",
+  "description": "Hazajobs in Rwanda this project is a popular job app where employers can post jobs for free. Jobs can be sorted by location (city, town, province) and applicants can use hazajobs to submit their resumes. Employers can include a job description, company information, and compensation details in their Posting",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yamuben/hazajobs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yamuben/hazajobs/issues"
+  },
+  "homepage": "https://github.com/yamuben/hazajobs#readme",
+  "dependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/node": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/polyfill": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "babel-eslint": "^10.0.3",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "date-and-time": "^0.12.0",
+    "dotenv": "^8.2.0",
+    "env": "0.0.2",
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "js-yaml": "^3.13.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0",
+    "swagger-ui-express": "^4.1.3"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.9",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.0",
+    "nodemon": "^2.0.2"
+  }
+}
