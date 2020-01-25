@@ -4,7 +4,8 @@
   "description": "Hazajobs in Rwanda this project is a popular job app where employers can post jobs for free. Jobs can be sorted by location (city, town, province) and applicants can use hazajobs to submit their resumes. Employers can include a job description, company information, and compensation details in their Posting",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-start": " nodemon --exec babel-node ./server/index.js"
   },
   "repository": {
     "type": "git",

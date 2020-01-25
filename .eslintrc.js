@@ -5,6 +5,10 @@ module.exports = {
     mocha: true
   },
   rules: {
+    "linebreak-style": [
+      "error",
+      process.env.NODE_ENV === "prod" ? "unix" : "windows"
+    ],
     "no-restricted-globals": "off",
     "consistent-return": "off"
   }
