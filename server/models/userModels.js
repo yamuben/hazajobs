@@ -2,9 +2,21 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 
 const userSchema = new mongoose.Schema({
-  name: {
+  userType: {
+    type: String,
+    required: [true, 'choose  between  individual  or company'],
+  },
+  firstName: {
     type: String,
     required: [true, 'please  tell us your  name'],
+  },
+  lastName: {
+    type: String,
+    required: [true, 'please  tell us your  name'],
+  },
+  phoneNumber: {
+    type: String,
+    required: [true, 'please  provide your  phone number'],
   },
   email: {
     type: String,
@@ -13,15 +25,10 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isEmail, 'Provide valid email'],
   },
-  photo: { type: String },
+
   password: {
     type: String,
-    required: [true, 'please  provide  your  password'],
-    minlength: 8,
-  },
-  passwordCofirm: {
-    type: String,
-    required: [true, 'please  confirm  your  password'],
+    required: [true, 'please  provide your  password'],
   },
 });
 const User = mongoose.Schema('User', userSchema);
