@@ -1,6 +1,6 @@
 const User = require("./../models/userModels");
 
-export const createuser = async(req, res) => {
+exports.createuser = async(req, res) => {
     try {
         const newUser = await User.create(req.body);
         res.status(201).json({
@@ -14,7 +14,7 @@ export const createuser = async(req, res) => {
         });
     }
 };
-export const signinuser = async(req, res) => {
+exports.signinuser = async(req, res) => {
     try {
         const userlogin = await User.findOne(req.body);
 
