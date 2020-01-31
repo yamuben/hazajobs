@@ -10,7 +10,8 @@ module.exports = {
             process.env.NODE_ENV === "prod" ? "unix" : "windows"
         ],
         "no-restricted-globals": "off",
-        "consistent-return": "off"
-        "import/prefer-default-export": "import/prefer-default-export"
+        "consistent-return": "off",
+        "import/prefer-default-export": "off",
+        "import/prefer-default-export": "off"
     }
 };

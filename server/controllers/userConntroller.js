@@ -1,6 +1,6 @@
-const User = require("./../models/userModels");
+import User from "./../models/userModels";
 
-exports.createuser = async(req, res) => {
+const createuser = async(req, res) => {
     try {
         const newUser = await User.create(req.body);
         res.status(201).json({
@@ -14,7 +14,7 @@ exports.createuser = async(req, res) => {
         });
     }
 };
-exports.signinuser = async(req, res) => {
+const signinuser = async(req, res) => {
     try {
         const userlogin = await User.findOne(req.body);
 
@@ -29,3 +29,5 @@ exports.signinuser = async(req, res) => {
         });
     }
 };
+
+export default { createuser, signinuser };
