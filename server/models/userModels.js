@@ -57,8 +57,7 @@ const userSchema = new mongoose.Schema({
 
     password: {
         type: String,
-        required: [true, "please  provide your  password"],
-        select: false
+        required: [true, "please  provide your  password"]
     },
     gender: {
         type: String,
