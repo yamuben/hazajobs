@@ -95,4 +95,17 @@ const updateUserProfile = async (req, res) => {
     return response.errorResponse(res, 400, error);
   }
 };
-export default { createuser, signinuser, updateUserProfile };
+const viewProfile = async (req, res) => {
+  try {
+    const { searchId } = req.params;
+    const userProfile = await User.findById(searchId);
+    return response.successResponse(
+      res, 200, 'User profile retrieved successfully', userProfile,
+    );
+  } catch (error) {
+    return response.errorResponse(res, 400, error);
+  }
+};
+export default {
+  createuser, signinuser, updateUserProfile, viewProfile,
+};
