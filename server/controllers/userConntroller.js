@@ -53,7 +53,7 @@ const createuser = async (req, res) => {
 const signinuser = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const userLogin = await User.findOne({ $or: [{ email: username }, { phoneNumber: username }] });
+    const userLogin = await User.findOne({ $or: [ { email: username }, { phoneNumber: username } ] });
     if (userLogin && decryptPassword(password, userLogin.password)) {
       const token = generateAuthToken(
         userLogin._id,
@@ -88,11 +88,28 @@ const updateUserProfile = async (req, res) => {
       new: true,
       runValidators: true,
     });
+
+    const userProfile = await User.findById(profile._id,
+      { password: 0, __v: 0, _id: 0 });
     return response.successResponse(
-      res, 200, 'User profile updated successfully', profile,
+      res, 200, 'User profile updated successfully', userProfile,
     );
   } catch (error) {
     return response.errorResponse(res, 400, error);
   }
 };
-export default { createuser, signinuser, updateUserProfile };
+const viewProfile = async (req, res) => {
+  try {
+    const { searchId } = req.params;
+    const userProfile = await User.findById(searchId,
+      { password: 0, __v: 0, _id: 0 });
+    return response.successResponse(
+      res, 200, 'User profile retrieved successfully', userProfile,
+    );
+  } catch (error) {
+    return response.errorResponse(res, 400, error);
+  }
+};
+export default {
+  createuser, signinuser, updateUserProfile, viewProfile,
+};
