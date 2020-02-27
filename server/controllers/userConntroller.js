@@ -53,7 +53,11 @@ const createuser = async (req, res) => {
 const signinuser = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const userLogin = await User.findOne({ $or: [ { email: username }, { phoneNumber: username } ] });
+    const userLogin = await User.findOne({
+      $or: [{ email: username },
+        { phoneNumber: username }],
+    });
+
     if (userLogin && decryptPassword(password, userLogin.password)) {
       const token = generateAuthToken(
         userLogin._id,
@@ -110,6 +114,24 @@ const viewProfile = async (req, res) => {
     return response.errorResponse(res, 400, error);
   }
 };
+const changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword, confirmPass } = req.body;
+    const userId = userIdFromToken(req.header('x-auth-token'));
+    const user = await User.findById(userId);
+    if ((newPassword === confirmPass) && (decryptPassword(oldPassword, user.password))) {
+      const hashed = encryptPassword(newPassword);
+      const newUser = await User.updateOne({ _id: userId },
+        { $set: { password: hashed } });
+      return response.successResponse(
+        res, 200, 'password changed successfully',
+      );
+    }
+    return response.errorResponse(res, 400, 'Incorrect oldPassword');
+  } catch (error) {
+    return response.errorResponse(res, 500, error);
+  }
+};
 export default {
-  createuser, signinuser, updateUserProfile, viewProfile,
+  createuser, signinuser, updateUserProfile, viewProfile, changePassword,
 };
