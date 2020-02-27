@@ -3,14 +3,10 @@ import lodash from 'lodash';
 import dotenv from 'dotenv';
 import { encryptPassword, decryptPassword } from '../helpers/securedPassword';
 import User from '../models/userModels';
-
 import response from '../helpers/responses';
-
 import { generateAuthToken, userIdFromToken } from '../helpers/tokens';
 
-
 dotenv.config();
-
 const createuser = async (req, res) => {
   try {
     let {
@@ -47,12 +43,7 @@ const createuser = async (req, res) => {
       ),
     };
     return response.successResponse(
-      res,
-
-      201,
-
-      'User created successfully',
-      data,
+      res, 201, 'User created successfully', data,
     );
   } catch (error) {
     return response.errorResponse(res, 400, error);
@@ -81,15 +72,7 @@ const signinuser = async (req, res) => {
         ),
       };
 
-      return response.successResponse(
-        res,
-
-        200,
-
-        'User logged in successfully',
-
-        data,
-      );
+      return response.successResponse(res, 200, 'User logged in successfully', data);
     }
     return response.errorResponse(res, 401, 'Incorrect email or password');
   } catch (error) {
@@ -101,18 +84,12 @@ const signinuser = async (req, res) => {
 const updateUserProfile = async (req, res) => {
   const userId = userIdFromToken(req.header('x-auth-token'));
   try {
-    // console(userId._id)
     const profile = await User.findByIdAndUpdate(userId, req.body, {
       new: true,
       runValidators: true,
     });
     return response.successResponse(
-      res,
-
-      200,
-
-      'User profile updated successfully',
-      profile,
+      res, 200, 'User profile updated successfully', profile,
     );
   } catch (error) {
     return response.errorResponse(res, 400, error);

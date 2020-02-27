@@ -1,23 +1,6 @@
 import validator from 'validator';
 import mongoose from 'mongoose';
 
-// First name *
-//   Last name *
-//     Phone *
-//     Email
-// Gender *
-//   ID no / Passport no
-// Profile Picture *
-//   Location(District, Sector) *
-//   Skills(Category; Sub Category) limits 5 *
-//     Self - description
-// Portfolio
-// Certification(Attachment)
-// Education
-// Experience
-// Status
-// User type (>Individual, >Company)
-// password
 
 const userSchema = new mongoose.Schema({
   userType: {

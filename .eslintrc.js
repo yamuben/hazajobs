@@ -12,6 +12,8 @@ module.exports = {
         "no-restricted-globals": "off",
         "consistent-return": "off",
         "import/prefer-default-export": "off",
-        "import/prefer-default-export": "off"
+        "import/prefer-default-export": "off",
+        "prefer-const":"off",
+        "no-underscore-dangle":"off"
     }
 };
