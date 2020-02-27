@@ -8,6 +8,5 @@ userrouter.post('/signup', userController.createuser);
 userrouter.post('/signin', userController.signinuser);
 userrouter.patch('/updateProfile', verifyAuth, userController.updateUserProfile);
 userrouter.get('/viewProfile/:searchId', verifyAuth, userController.viewProfile);
-
-
+userrouter.patch('/profile/changePassword', verifyAuth, userController.changePassword);
 export default userrouter;
