@@ -8,67 +8,67 @@ const jobpostSchema = new mongoose.Schema({
 
   jobtitle: {
     type: String,
-    required: [true, 'Job title is required.'],
+    required: [ true, 'Job title is required.' ],
     unique: false,
     trim: true,
   },
 
   organization: {
     type: String,
-    required: [true, 'Organisation is required.'],
+    required: [ true, 'Organisation is required.' ],
     unique: false,
     trim: true,
   },
 
   numberofpositions: {
     type: Number,
-    required: [true, 'Number of position is required.'],
+    required: [ true, 'Number of position is required.' ],
     unique: false,
     default: 1,
   },
 
   jobduration: {
     type: String,
-    required: [false, 'Job duration is required.'],
+    required: [ false, 'Job duration is required.' ],
     unique: false,
     default: 'Part-time',
   },
 
   deadline: {
     type: Date,
-    required: [true, 'Apllication deadline is required.'],
+    required: [ true, 'Apllication deadline is required.' ],
     unique: false,
   },
 
   salary: {
     type: Number,
-    required: [false, 'Salary is not required.'],
+    required: [ false, 'Salary is not required.' ],
     unique: false,
   },
 
   workingdays: {
     type: Number,
-    required: [false, 'working days is not required.'],
+    required: [ false, 'working days is not required.' ],
     unique: false,
   },
 
   joblocation: {
-    type: String,
-    required: [true, 'Job Location is required.'],
+    type: Array,
+    required: [ true, 'Job Location is required.' ],
     unique: false,
     trim: true,
   },
 
   jobdescription: {
     type: String,
-    required: [true, 'Job description is required.'],
+    required: [ true, 'Job description is required.' ],
     unique: false,
     trim: true,
   },
 
   jobqualification: {
     type: String,
-    required: [false, 'Job qualification is not required.'],
+    required: [ false, 'Job qualification is not required.' ],
     unique: false,
     trim: true,
   },
@@ -77,7 +77,9 @@ const jobpostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  jobstartfrom: [Date],
+  jobStartFrom: {
+    type: Date,
+  },
 
   jobstate: {
     type: String,
