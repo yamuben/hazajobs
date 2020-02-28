@@ -17,6 +17,7 @@ const createnewjob = async (req, res) => {
       joblocation,
       jobdescription,
       jobqualification,
+      jobStartFrom,
     } = req.body;
     const userId = userIdFromToken(req.header('x-auth-token'));
 
@@ -33,6 +34,7 @@ const createnewjob = async (req, res) => {
       joblocation,
       jobdescription,
       jobqualification,
+      jobStartFrom,
     });
     return response.successResponse(
       res,

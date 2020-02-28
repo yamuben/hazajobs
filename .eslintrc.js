@@ -1,5 +1,5 @@
 module.exports = {
-    extends: ["airbnb-base"],
+    extends: [ "airbnb-base" ],
     parser: "babel-eslint",
     env: {
         mocha: true
@@ -13,7 +13,8 @@ module.exports = {
         "consistent-return": "off",
         "import/prefer-default-export": "off",
         "import/prefer-default-export": "off",
-        "prefer-const":"off",
-        "no-underscore-dangle":"off"
+        "prefer-const": "off",
+        "no-underscore-dangle": "off",
+        "array-bracket-spacing": "off"
     }
 };
