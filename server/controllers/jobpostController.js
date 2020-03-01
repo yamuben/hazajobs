@@ -57,7 +57,6 @@ const matchingJobs = async (req, res) => {
   try {
     const userId = userIdFromToken(req.header('x-auth-token'));
     const user = await User.findById(userId);
-    console.log(user)
     if (user) {
       const userJobs = await jobpost.find({
 

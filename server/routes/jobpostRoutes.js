@@ -7,5 +7,5 @@ const jobpostrouter = express.Router();
 
 jobpostrouter.post('/newjobpost', verifyAuth, jobpostController.createnewjob);
 jobpostrouter.get('/jobs', jobpostController.findALLjobs);
-jobpostrouter.get('/matchingJobs', jobpostController.matchingJobs);
+jobpostrouter.get('/matchingJobs', verifyAuth, jobpostController.matchingJobs);
 export default jobpostrouter;
