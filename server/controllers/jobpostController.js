@@ -71,5 +71,16 @@ const matchingJobs = async (req, res) => {
     return response.errorResponse(res, 404, error);
   }
 };
+const deleteJob = async (req, res) => {
+  const userId = userIdFromToken(req.header('x-auth-token'));
+  const { jobId } = req.params;
+  const job = await jobpost.findById(jobId);
+  if (job && job.jobuserid === userId) {
+    jobpost.deleteOne({ _id: jobId });
+    return response.successResponse(res, 200, 'job successfully deleted');
+  }
+};
 
-export default { createnewjob, findALLjobs, matchingJobs };
+export default {
+  createnewjob, findALLjobs, matchingJobs, deleteJob,
+};
