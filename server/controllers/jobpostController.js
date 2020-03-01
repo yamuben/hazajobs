@@ -36,17 +36,19 @@ const createnewjob = async (req, res) => {
       jobqualification,
       jobStartFrom,
     });
-    return response.successResponse(
-      res,
-
-      201,
-
-      'job posted successfully',
-      newJobPost,
-    );
+    return response.successResponse(res, 201, 'job posted successfully', newJobPost);
   } catch (error) {
     return response.errorResponse(res, 400, error);
   }
 };
-
-export default { createnewjob };
+const findALLjobs = async (req, res) => {
+  try {
+    const jobs = await jobpost.find();
+    const sortedJobs = jobs.sort((a, b) => (new Date(b.jobcreatedat)).getTime()
+      - (new Date(a.jobcreatedat).getTime()));
+    return response.successResponse(res, 201, 'jobs retrieved successfully', sortedJobs);
+  } catch (error) {
+    return response.errorResponse(res, 400, error);
+  }
+};
+export default { createnewjob, findALLjobs };
