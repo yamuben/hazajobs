@@ -59,14 +59,12 @@ const matchingJobs = async (req, res) => {
     const user = await User.findById(userId);
     if (user) {
       const userJobs = await jobpost.find({
-
-        $or: [ { jobqualification: user.skills }, {
-          joblocation: user.location,
-        } ],
+        $or: [ { 'jobqualification.first': user.skills.first }, { 'jobqualification.second': user.skills.second }, { 'joblocation.province': user.location.province }, { 'joblocation.district': user.location.district }, { 'joblocation.center': user.location.center } ],
       });
-      return response.successResponse(res, 200, 'Jobs matching your data', userJobs);
+      if (userJobs.length) { return response.successResponse(res, 200, 'Jobs matching your data', userJobs); }
+      return response.errorResponse(res, 404, 'Jobs matches with your data are not available');
     }
-    return response.errorResponse(res, 404, 'Jobs matches with your data are not available');
+    return response.errorResponse(res, 404, 'You are not a user');
   } catch (error) {
     return response.errorResponse(res, 404, error);
   }
