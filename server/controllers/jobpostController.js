@@ -76,8 +76,8 @@ const deleteJob = async (req, res) => {
   const { jobId } = req.params;
   const job = await jobpost.findById(jobId);
   if (job && job.jobuserid === userId) {
-    jobpost.deleteOne({ _id: jobId });
-    return response.successResponse(res, 200, 'job successfully deleted');
+    const deletedJob = await jobpost.deleteOne({ _id: jobId });
+    return response.successResponse(res, 200, 'job successfully deleted', deletedJob);
   }
 };
 
