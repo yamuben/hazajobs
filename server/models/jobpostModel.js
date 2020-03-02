@@ -53,10 +53,18 @@ const jobpostSchema = new mongoose.Schema({
   },
 
   joblocation: {
-    type: Array,
-    required: [ true, 'Job Location is required.' ],
-    unique: false,
-    trim: true,
+    province: {
+      type: String,
+      required: [ true, 'Job Location is required.' ],
+    },
+    district: {
+      type: String,
+      required: [ true, 'Job Location is required.' ],
+    },
+    center: {
+      type: String,
+      required: false,
+    },
   },
 
   jobdescription: {
@@ -65,12 +73,15 @@ const jobpostSchema = new mongoose.Schema({
     unique: false,
     trim: true,
   },
-
   jobqualification: {
-    type: String,
-    required: [ false, 'Job qualification is not required.' ],
-    unique: false,
-    trim: true,
+    first: {
+      type: String,
+      required: [ false, 'Job skills is required.' ],
+    },
+    second: {
+      type: String,
+      required: [ false, 'Job skills is required.' ],
+    },
   },
 
   jobcreatedat: {
