@@ -92,11 +92,11 @@ const searchInJobs = async (req, res) => {
     const { searchParameter } = req.params;
     const searchResult = await jobPost.find({
       $or: [
-        { 'joblocation.province': { $regex: `.*${searchParameter}.*` } },
-        { 'joblocation.district': { $regex: `.*${searchParameter}.*` } },
-        { 'joblocation.center': { $regex: `.*${searchParameter}.*` } },
-        { 'jobqualification.first': { $regex: `.*${searchParameter}.*` } },
-        { 'jobqualification.second': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.province': { $regex: `.*${ searchParameter }.*` } },
+        { 'joblocation.district': { $regex: `.*${ searchParameter }.*` } },
+        { 'joblocation.center': { $regex: `.*${ searchParameter }.*` } },
+        { 'jobqualification.first': { $regex: `.*${ searchParameter }.*` } },
+        { 'jobqualification.second': { $regex: `.*${ searchParameter }.*` } },
       ],
     });
     if (searchInJobs.length === 0) {
@@ -107,6 +107,18 @@ const searchInJobs = async (req, res) => {
     return response.errorResponse(res, 500, error);
   }
 };
+const searchYourJobPost = async (req, res) => {
+  try {
+    const userId = userIdFromToken(req.header('x-auth-token'));
+    const companiesPostedJob = await jobPost.find({ jobuserid: userId });
+    if (companiesPostedJob.length) {
+      return response.successResponse(res, 200, 'Job posted are available', companiesPostedJob);
+    }
+    return response.errorResponse(res, 404, 'Jobs posted are not available');
+  } catch (err) {
+    return response.errorResponse(res, 500, err);
+  }
+};
 export default {
-  createnewjob, findALLjobs, matchingJobs, deleteJob, searchInJobs,
+  createnewjob, findALLjobs, matchingJobs, deleteJob, searchInJobs, searchYourJobPost,
 };
