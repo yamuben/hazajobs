@@ -109,11 +109,11 @@ const searchInJobs = async (req, res) => {
     const { searchParameter } = req.params;
     const searchResult = await jobPost.find({
       $or: [
-        { 'joblocation.province': { $regex: `.*${ searchParameter }.*` } },
-        { 'joblocation.district': { $regex: `.*${ searchParameter }.*` } },
-        { 'joblocation.center': { $regex: `.*${ searchParameter }.*` } },
-        { 'jobqualification.first': { $regex: `.*${ searchParameter }.*` } },
-        { 'jobqualification.second': { $regex: `.*${ searchParameter }.*` } },
+        { 'joblocation.province': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.district': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.center': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.first': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.second': { $regex: `.*${searchParameter}.*` } },
       ],
     });
     if (searchInJobs.length === 0) {
