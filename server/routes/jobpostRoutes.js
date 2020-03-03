@@ -1,13 +1,14 @@
 
 import express from 'express';
-import jobPostController from '../controllers/jobPostController';
+import jobPostController from '../controllers/jobpostController';
 import { verifyAuth } from '../middlewares/authVerification';
 
-const jobPostrouter = express.Router();
+const jobPostRouter = express.Router();
 
-jobPostrouter.post('/newjobPost', verifyAuth, jobPostController.createnewjob);
-jobPostrouter.get('/jobs', jobPostController.findALLjobs);
-jobPostrouter.get('/matchingJobs', verifyAuth, jobPostController.matchingJobs);
-jobPostrouter.delete('/matchingJobs/:jobId', verifyAuth, jobPostController.deleteJob);
-jobPostrouter.get('/jobs/:searchParameter', jobPostController.searchInJobs);
-export default jobPostrouter;
+jobPostRouter.post('/newjobPost', verifyAuth, jobPostController.createnewjob);
+jobPostRouter.get('/jobs', jobPostController.findALLjobs);
+jobPostRouter.get('/matchingJobs', verifyAuth, jobPostController.matchingJobs);
+jobPostRouter.delete('/matchingJobs/:jobId', verifyAuth, jobPostController.deleteJob);
+jobPostRouter.get('/jobs/:searchParameter', jobPostController.searchInJobs);
+jobPostRouter.get('/home/myJobPosted', verifyAuth, jobPostController.searchYourJobPost);
+export default jobPostRouter;
