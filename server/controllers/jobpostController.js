@@ -43,6 +43,23 @@ const createnewjob = async (req, res) => {
     return response.errorResponse(res, 400, error);
   }
 };
+const editPostedJob = async (req, res) => {
+  try {
+    const userId = userIdFromToken(req.header('x-auth-token'));
+    const { jobId } = req.params;
+    const editableJob = await jobPost.findById(jobId);
+    if (editableJob.jobuserid === userId) {
+      const updatedJobPost = await jobPost.findByIdAndUpdate(jobId, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      return response.successResponse(res, 400, 'Job edited successfully', updatedJobPost);
+    }
+    return response.errorResponse(res, 403, "This job post doesn't belong to you");
+  } catch (err) {
+    return response.errorResponse(res, 500, err);
+  }
+};
 const findALLjobs = async (req, res) => {
   try {
     const jobs = await jobPost.find();
@@ -53,7 +70,7 @@ const findALLjobs = async (req, res) => {
     }
     return response.errorResponse(res, 404, 'Jobs are not available');
   } catch (error) {
-    return response.errorResponse(res, 404, error);
+    return response.errorResponse(res, 500, error);
   }
 };
 const matchingJobs = async (req, res) => {
@@ -92,11 +109,11 @@ const searchInJobs = async (req, res) => {
     const { searchParameter } = req.params;
     const searchResult = await jobPost.find({
       $or: [
-        { 'joblocation.province': { $regex: `.*${ searchParameter }.*` } },
-        { 'joblocation.district': { $regex: `.*${ searchParameter }.*` } },
-        { 'joblocation.center': { $regex: `.*${ searchParameter }.*` } },
-        { 'jobqualification.first': { $regex: `.*${ searchParameter }.*` } },
-        { 'jobqualification.second': { $regex: `.*${ searchParameter }.*` } },
+        { 'joblocation.province': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.district': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.center': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.first': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.second': { $regex: `.*${searchParameter}.*` } },
       ],
     });
     if (searchInJobs.length === 0) {
@@ -110,7 +127,6 @@ const searchInJobs = async (req, res) => {
 const searchYourJobPost = async (req, res) => {
   try {
     const userId = userIdFromToken(req.header('x-auth-token'));
-    console.log(userId);
     const companiesPostedJob = await jobPost.find({ jobuserid: userId });
     if (companiesPostedJob.length) {
       return response.successResponse(res, 200, 'Job posted are available', companiesPostedJob);
@@ -121,5 +137,11 @@ const searchYourJobPost = async (req, res) => {
   }
 };
 export default {
-  createnewjob, findALLjobs, matchingJobs, deleteJob, searchInJobs, searchYourJobPost,
+  createnewjob,
+  editPostedJob,
+  findALLjobs,
+  matchingJobs,
+  deleteJob,
+  searchInJobs,
+  searchYourJobPost,
 };
