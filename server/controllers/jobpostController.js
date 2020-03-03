@@ -1,5 +1,5 @@
 
-import jobpost from '../models/jobpostModel';
+import jobPost from '../models/jobPostModel';
 import User from '../models/userModels';
 import response from '../helpers/responses';
 import { userIdFromToken } from '../helpers/tokens';
@@ -24,7 +24,7 @@ const createnewjob = async (req, res) => {
     const userId = userIdFromToken(req.header('x-auth-token'));
 
     jobuserid = userId;
-    const newJobPost = await jobpost.create({
+    const newjobPost = await jobPost.create({
       jobuserid,
       jobtitle,
       organization,
@@ -38,14 +38,14 @@ const createnewjob = async (req, res) => {
       jobqualification,
       jobStartFrom,
     });
-    return response.successResponse(res, 201, 'job posted successfully', newJobPost);
+    return response.successResponse(res, 201, 'job posted successfully', newjobPost);
   } catch (error) {
     return response.errorResponse(res, 400, error);
   }
 };
 const findALLjobs = async (req, res) => {
   try {
-    const jobs = await jobpost.find();
+    const jobs = await jobPost.find();
     if (jobs.length) {
       const sortedJobs = jobs.sort((a, b) => (new Date(b.jobcreatedat)).getTime()
         - (new Date(a.jobcreatedat).getTime()));
@@ -61,7 +61,7 @@ const matchingJobs = async (req, res) => {
     const userId = userIdFromToken(req.header('x-auth-token'));
     const user = await User.findById(userId);
     if (user) {
-      const userJobs = await jobpost.find({
+      const userJobs = await jobPost.find({
         $or: [ { 'jobqualification.first': user.skills.first }, { 'jobqualification.second': user.skills.second }, { 'joblocation.province': user.location.province }, { 'joblocation.district': user.location.district }, { 'joblocation.center': user.location.center } ],
       });
       if (userJobs.length) { return response.successResponse(res, 200, 'Jobs matching your data', userJobs); }
@@ -76,9 +76,9 @@ const deleteJob = async (req, res) => {
   try {
     const userId = userIdFromToken(req.header('x-auth-token'));
     const { jobId } = req.params;
-    const job = await jobpost.findById(jobId);
+    const job = await jobPost.findById(jobId);
     if (job && job.jobuserid === userId) {
-      const deletedJob = await jobpost.deleteOne({ _id: jobId });
+      const deletedJob = await jobPost.deleteOne({ _id: jobId });
       return response.successResponse(res, 200, 'job successfully deleted', deletedJob);
     }
     return response.errorResponse(res, 404, 'job is not found');
@@ -90,7 +90,7 @@ const deleteJob = async (req, res) => {
 const searchInJobs = async (req, res) => {
   try {
     const { searchParameter } = req.params;
-    const searchResult = await jobpost.find({
+    const searchResult = await jobPost.find({
       $or: [
         { 'joblocation.province': { $regex: `.*${searchParameter}.*` } },
         { 'joblocation.district': { $regex: `.*${searchParameter}.*` } },

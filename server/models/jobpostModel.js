@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const jobpostSchema = new mongoose.Schema({
+const jobPostSchema = new mongoose.Schema({
 
   jobuserid: {
     type: String,
@@ -98,5 +98,5 @@ const jobpostSchema = new mongoose.Schema({
   },
 });
 
-const jobpost = mongoose.model('jobpost', jobpostSchema);
-export default jobpost;
+const jobPost = mongoose.model('jobPost', jobPostSchema);
+export default jobPost;
