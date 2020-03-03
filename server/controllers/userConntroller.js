@@ -55,7 +55,7 @@ const signinuser = async (req, res) => {
     const { username, password } = req.body;
     const userLogin = await User.findOne({
       $or: [ { email: username },
-        { phoneNumber: username } ],
+      { phoneNumber: username } ],
     });
 
     if (userLogin && decryptPassword(password, userLogin.password)) {
@@ -137,8 +137,9 @@ const searchUser = async (req, res) => {
     const { userParameter } = req.params;
     const userResults = await User.find({
       $or: [
-        { firstName: { $regex: `.*${userParameter}.*` } },
-        { lastName: { $regex: `.*${userParameter}.*` } },
+        { phoneNumber: { $regex: `.*${ userParameter }.*` } },
+        { firstName: { $regex: `.*${ userParameter }.*` } },
+        { lastName: { $regex: `.*${ userParameter }.*` } },
       ],
     });
     if (userResults.length) {
