@@ -92,13 +92,13 @@ const searchInJobs = async (req, res) => {
     const { searchParameter } = req.params;
     const searchResult = await jobpost.find({
       $or: [ {
-        'joblocation.district': /.*searchParameter.*/,
+        'joblocation.district': { $regex: searchParameter },
       }, {
-        'joblocation.district': /searchParameter/,
+        'joblocation.district': { $regex: searchParameter },
       },
-      { 'joblocation.center': /searchParameter/ },
-      { 'jobqualification.first': /searchParameter/ },
-      { 'jobqualification.second': /searchParameter/ } ],
+      { 'joblocation.center': { $regex: searchParameter } },
+      { 'jobqualification.first': { $regex: searchParameter } },
+      { 'jobqualification.second': { $regex: searchParameter } } ],
     });
     if (searchInJobs.length) {
       return response.successResponse(res, 200, 'job successfully deleted', searchResult);
