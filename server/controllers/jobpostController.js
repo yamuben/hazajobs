@@ -110,6 +110,7 @@ const searchInJobs = async (req, res) => {
 const searchYourJobPost = async (req, res) => {
   try {
     const userId = userIdFromToken(req.header('x-auth-token'));
+    console.log(userId);
     const companiesPostedJob = await jobPost.find({ jobuserid: userId });
     if (companiesPostedJob.length) {
       return response.successResponse(res, 200, 'Job posted are available', companiesPostedJob);
