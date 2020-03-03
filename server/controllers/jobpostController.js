@@ -46,9 +46,12 @@ const createnewjob = async (req, res) => {
 const findALLjobs = async (req, res) => {
   try {
     const jobs = await jobpost.find();
-    const sortedJobs = jobs.sort((a, b) => (new Date(b.jobcreatedat)).getTime()
-      - (new Date(a.jobcreatedat).getTime()));
-    return response.successResponse(res, 201, 'jobs retrieved successfully', sortedJobs);
+    if (jobs.length) {
+      const sortedJobs = jobs.sort((a, b) => (new Date(b.jobcreatedat)).getTime()
+        - (new Date(a.jobcreatedat).getTime()));
+      return response.successResponse(res, 201, 'jobs retrieved successfully', sortedJobs);
+    }
+    return response.errorResponse(res, 404, 'Jobs are not available');
   } catch (error) {
     return response.errorResponse(res, 404, error);
   }
@@ -64,21 +67,46 @@ const matchingJobs = async (req, res) => {
       if (userJobs.length) { return response.successResponse(res, 200, 'Jobs matching your data', userJobs); }
       return response.errorResponse(res, 404, 'Jobs matches with your data are not available');
     }
-    return response.errorResponse(res, 404, 'You are not a user');
+    return response.errorResponse(res, 401, 'You are not a user');
   } catch (error) {
-    return response.errorResponse(res, 404, error);
+    return response.errorResponse(res, 500, error);
   }
 };
 const deleteJob = async (req, res) => {
-  const userId = userIdFromToken(req.header('x-auth-token'));
-  const { jobId } = req.params;
-  const job = await jobpost.findById(jobId);
-  if (job && job.jobuserid === userId) {
-    const deletedJob = await jobpost.deleteOne({ _id: jobId });
-    return response.successResponse(res, 200, 'job successfully deleted', deletedJob);
+  try {
+    const userId = userIdFromToken(req.header('x-auth-token'));
+    const { jobId } = req.params;
+    const job = await jobpost.findById(jobId);
+    if (job && job.jobuserid === userId) {
+      const deletedJob = await jobpost.deleteOne({ _id: jobId });
+      return response.successResponse(res, 200, 'job successfully deleted', deletedJob);
+    }
+    return response.errorResponse(res, 404, 'job is not found');
+  } catch (error) {
+    return response.errorResponse(res, 500, error);
   }
 };
 
+const searchInJobs = async (req, res) => {
+  try {
+    const { searchParameter } = req.params;
+    const searchResult = await jobpost.find({
+      $or: [
+        { 'joblocation.province': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.district': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.center': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.first': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.second': { $regex: `.*${searchParameter}.*` } },
+      ],
+    });
+    if (searchInJobs.length === 0) {
+      return response.errorResponse(res, 404, 'job is not found');
+    }
+    return response.successResponse(res, 200, 'job successfully retrieved ', searchResult);
+  } catch (error) {
+    return response.errorResponse(res, 500, error);
+  }
+};
 export default {
-  createnewjob, findALLjobs, matchingJobs, deleteJob,
+  createnewjob, findALLjobs, matchingJobs, deleteJob, searchInJobs,
 };
