@@ -54,8 +54,8 @@ const signinuser = async (req, res) => {
   try {
     const { username, password } = req.body;
     const userLogin = await User.findOne({
-      $or: [{ email: username },
-        { phoneNumber: username }],
+      $or: [ { email: username },
+        { phoneNumber: username } ],
     });
 
     if (userLogin && decryptPassword(password, userLogin.password)) {
@@ -124,7 +124,7 @@ const changePassword = async (req, res) => {
       const newUser = await User.updateOne({ _id: userId },
         { $set: { password: hashed } });
       return response.successResponse(
-        res, 200, 'password changed successfully',
+        res, 200, 'password changed successfully', newUser,
       );
     }
     return response.errorResponse(res, 400, 'Incorrect oldPassword');
@@ -132,6 +132,23 @@ const changePassword = async (req, res) => {
     return response.errorResponse(res, 500, error);
   }
 };
+const searchUser = async (req, res) => {
+  try {
+    const { userParameter } = req.params;
+    const userResults = await User.find({
+      $or: [
+        { firstName: { $regex: `.*${userParameter}.*` } },
+        { lastName: { $regex: `.*${userParameter}.*` } },
+      ],
+    });
+    if (userResults.length) {
+      return response.successResponse(res, 200, 'password changed successfully', userResults);
+    }
+    return response.errorResponse(res, 404, 'User is not found');
+  } catch (error) {
+    return response.errorResponse(res, 500, error);
+  }
+};
 export default {
-  createuser, signinuser, updateUserProfile, viewProfile, changePassword,
+  createuser, signinuser, updateUserProfile, viewProfile, changePassword, searchUser,
 };
