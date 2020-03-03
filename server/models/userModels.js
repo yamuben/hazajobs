@@ -109,6 +109,6 @@ const userSchema = new mongoose.Schema({
     trim: true,
   },
 });
-const Userprofile = mongoose.model('Userprofile', userSchema);
+const UserProfile = mongoose.model('UserProfile', userSchema);
 
-export default Userprofile;
+export default UserProfile;
