@@ -8,6 +8,9 @@ const jobAppSchema = new mongoose.Schema({
   jobId: {
     type: String,
   },
+  jobOwner: {
+    type: String,
+  },
   jobAppDate: {
     type: Date,
     default: Date.now(),
@@ -20,6 +23,7 @@ const jobAppSchema = new mongoose.Schema({
     type: String,
     default: 'pending',
   },
+
 
 });
 const jobApplication = mongoose.model('jobApplication', jobAppSchema);

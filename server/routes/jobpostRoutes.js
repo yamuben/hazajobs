@@ -1,6 +1,6 @@
 
 import express from 'express';
-import jobPostController from '../controllers/jobpostController';
+import jobPostController from '../controllers/jobPostController';
 import { verifyAuth } from '../middlewares/authVerification';
 
 const jobPostRouter = express.Router();
