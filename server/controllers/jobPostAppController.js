@@ -41,7 +41,24 @@ const myJobApplications = async (req, res) => {
     }
     return response.errorResponse(res, 404, 'your applications are not available');
   } catch (error) {
-    return response.errorResponse(res, 400, error);
+    return response.errorResponse(res, 500, error);
   }
 };
-export default { createJobApplication, myJobApplications };
+const accecptAplication = async (req, res) => {
+  try {
+    const { jobAppId } = req.params;
+    const userData = userIdFromToken(req.header('x-auth-token'));
+    const jobAppPost = await jobApp.findById(jobAppId);
+    if (jobAppPost && jobAppPost.jobOwnerId === userData) {
+      const acceptedJobApp = await jobApp.find({ id: jobAppId }, { $set: { status: 'accepted' } }, {
+        new: true,
+        runValidators: true,
+      });
+      return response.successResponse(res, 200, 'Application is accepted', acceptedJobApp);
+    }
+    return response.errorResponse(res, 404, 'Tha job application is not found');
+  } catch (error) {
+    return response.errorResponse(res, 500, error);
+  }
+};
+export default { createJobApplication, myJobApplications, accecptAplication };
