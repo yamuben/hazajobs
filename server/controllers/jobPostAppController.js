@@ -19,4 +19,16 @@ const createJobApplication = async (req, res) => {
     return response.errorResponse(res, 400, error);
   }
 };
-export default { createJobApplication };
+const myJobApplications = async (req, res) => {
+  try {
+    const userData = userIdFromToken(req.header('x-auth-token'));
+    const jobApplications = await jobApp.find({ userId: userData });
+    if (jobApplications.length) {
+      return response.successResponse(res, 200, 'your applications are available', jobApplications);
+    }
+    return response.errorResponse(res, 404, 'your applications are not available');
+  } catch (error) {
+    return response.errorResponse(res, 400, error);
+  }
+};
+export default { createJobApplication, myJobApplications };
