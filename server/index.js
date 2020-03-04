@@ -28,9 +28,9 @@ mongoose
 app.use(bodyParse.json());
 app.use('/api/v1/auth', userRoutes);
 app.use('/api/v1', jobPostRoute);
-app.use('/api/v1', jobPostRoute);
+app.use('/api/v1', jobPostAppRouter);
 
 // project server
 const { port } = Config;
-app.listen(port, () => process.stdout.write(`Listening on port ${ port } ...\n********************\n`));
+app.listen(port, () => process.stdout.write(`Listening on port ${port} ...\n******************** \n`));
 export default app;
