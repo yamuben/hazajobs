@@ -121,10 +121,13 @@ const searchInJobs = async (req, res) => {
         { 'jobqualification.second': { $regex: `.*${ searchParameter }.*` } },
       ],
     });
-    if (searchInJobs.length === 0) {
-      return response.errorResponse(res, 404, 'job is not found');
+    if (searchResult.length) {
+      const sortedSearchedJobs = searchResult.sort((a, b) => (new Date(b.jobcreatedat)).getTime()
+        - (new Date(a.jobcreatedat).getTime()));
+      return response.successResponse(res, 200, 'job successfully retrieved ', sortedSearchedJobs);
+
     }
-    return response.successResponse(res, 200, 'job successfully retrieved ', searchResult);
+    return response.errorResponse(res, 404, 'job is not found');
   } catch (error) {
     return response.errorResponse(res, 500, error);
   }
