@@ -56,9 +56,28 @@ const accecptAplication = async (req, res) => {
       });
       return response.successResponse(res, 200, 'Application is accepted', acceptedJobApp);
     }
-    return response.errorResponse(res, 404, 'Tha job application is not found');
+    return response.errorResponse(res, 404, 'That job application is not found');
   } catch (error) {
     return response.errorResponse(res, 500, error);
   }
 };
-export default { createJobApplication, myJobApplications, accecptAplication };
+const rejectApplication = async (req, res) => {
+  try {
+    const { jobAppId } = req.params;
+    const userData = userIdFromToken(req.header('x-auth-token'));
+    const jobAppPost = await jobApp.findById(jobAppId);
+    if (jobAppPost && jobAppPost.jobOwnerId === userData) {
+      const rejectedJobApp = await jobApp.updateOne({ _id: jobAppId }, { $set: { status: 'rejected' } }, {
+        new: true,
+        runValidators: true,
+      });
+      return response.successResponse(res, 200, 'Application is rejected', rejectedJobApp);
+    }
+    return response.errorResponse(res, 404, 'That job application is not found');
+  } catch (error) {
+    return response.errorResponse(res, 500, error);
+  }
+};
+export default {
+  createJobApplication, myJobApplications, accecptAplication, rejectApplication,
+};
