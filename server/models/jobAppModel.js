@@ -2,10 +2,19 @@ import mongoose from 'mongoose';
 
 
 const jobAppSchema = new mongoose.Schema({
+  jobId: {
+    type: String,
+  },
   userId: {
     type: String,
   },
-  jobId: {
+  jobOwnerId: {
+    type: String,
+  },
+  jobOwner: {
+    type: String,
+  },
+  jobTitle: {
     type: String,
   },
   jobAppDate: {
@@ -16,6 +25,11 @@ const jobAppSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    default: 'pending',
+  },
+
 
 });
 const jobApplication = mongoose.model('jobApplication', jobAppSchema);
