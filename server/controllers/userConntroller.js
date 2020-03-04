@@ -1,12 +1,10 @@
 
 import lodash from 'lodash';
-import dotenv from 'dotenv';
 import { encryptPassword, decryptPassword } from '../helpers/securedPassword';
 import User from '../models/userModels';
 import response from '../helpers/responses';
 import { generateAuthToken, userIdFromToken } from '../helpers/tokens';
 
-dotenv.config();
 const createuser = async (req, res) => {
   try {
     let {
@@ -53,10 +51,9 @@ const createuser = async (req, res) => {
 const signinuser = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const userLogin = await User.findOne({
-      $or: [ { email: username },
-      { phoneNumber: username } ],
-    });
+    const userLogin = await User.findOne(
+      { $or: [ { email: username }, { phoneNumber: username } ] },
+    );
 
     if (userLogin && decryptPassword(password, userLogin.password)) {
       const token = generateAuthToken(
@@ -137,9 +134,9 @@ const searchUser = async (req, res) => {
     const { userParameter } = req.params;
     const userResults = await User.find({
       $or: [
-        { phoneNumber: { $regex: `.*${ userParameter }.*` } },
-        { firstName: { $regex: `.*${ userParameter }.*` } },
-        { lastName: { $regex: `.*${ userParameter }.*` } },
+        { phoneNumber: { $regex: `.*${userParameter}.*` } },
+        { firstName: { $regex: `.*${userParameter}.*` } },
+        { lastName: { $regex: `.*${userParameter}.*` } },
       ],
     });
     if (userResults.length) {
