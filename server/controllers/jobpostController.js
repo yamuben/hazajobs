@@ -113,19 +113,18 @@ const searchInJobs = async (req, res) => {
     const { searchParameter } = req.params;
     const searchResult = await jobPost.find({
       $or: [
-        { organization: { $regex: `.*${ searchParameter }.*` } },
-        { 'joblocation.province': { $regex: `.*${ searchParameter }.*` } },
-        { 'joblocation.district': { $regex: `.*${ searchParameter }.*` } },
-        { 'joblocation.center': { $regex: `.*${ searchParameter }.*` } },
-        { 'jobqualification.first': { $regex: `.*${ searchParameter }.*` } },
-        { 'jobqualification.second': { $regex: `.*${ searchParameter }.*` } },
+        { organization: { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.province': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.district': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.center': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.first': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.second': { $regex: `.*${searchParameter}.*` } },
       ],
     });
     if (searchResult.length) {
       const sortedSearchedJobs = searchResult.sort((a, b) => (new Date(b.jobcreatedat)).getTime()
         - (new Date(a.jobcreatedat).getTime()));
       return response.successResponse(res, 200, 'job successfully retrieved ', sortedSearchedJobs);
-
     }
     return response.errorResponse(res, 404, 'job is not found');
   } catch (error) {
@@ -137,7 +136,9 @@ const searchYourJobPost = async (req, res) => {
     const userId = userIdFromToken(req.header('x-auth-token'));
     const companiesPostedJob = await jobPost.find({ jobuserid: userId });
     if (companiesPostedJob.length) {
-      return response.successResponse(res, 200, 'Job posted are available', companiesPostedJob);
+      const sortedSearchedJobPost = companiesPostedJob.sort((a, b) => (new Date(b.jobcreatedat))
+        .getTime() - (new Date(a.jobcreatedat).getTime()));
+      return response.successResponse(res, 200, 'Job posted are available', sortedSearchedJobPost);
     }
     return response.errorResponse(res, 404, 'Jobs posted are not available');
   } catch (err) {
