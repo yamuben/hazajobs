@@ -24,7 +24,9 @@ const myJobApplications = async (req, res) => {
     const userData = userIdFromToken(req.header('x-auth-token'));
     const jobApplications = await jobApp.find({ userId: userData });
     if (jobApplications.length) {
-      return response.successResponse(res, 200, 'your applications are available', jobApplications);
+      const sortedJobsApplications = jobApplications.sort((a, b) => (new Date(b.jobAppDate))
+        .getTime() - (new Date(a.jobAppDate).getTime()));
+      return response.successResponse(res, 200, 'your applications are available', sortedJobsApplications);
     }
     return response.errorResponse(res, 404, 'your applications are not available');
   } catch (error) {
