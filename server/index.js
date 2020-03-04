@@ -12,9 +12,6 @@ const app = express();
 
 dotenv.config({ path: './.env' });
 
-// const DB = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
-
-// database connection codes
 mongoose
   .connect(process.env.DATABASE, {
     useNewUrlParser: true,
@@ -23,14 +20,11 @@ mongoose
     useFindAndModify: false,
   })
   .then(() => process.stdout.write('DB Connection succesfully'));
-
-// project routes or path
 app.use(bodyParse.json());
 app.use('/api/v1/auth', userRoutes);
 app.use('/api/v1', jobPostRoute);
 app.use('/api/v1', jobPostAppRouter);
 
-// project server
 const { port } = Config;
 app.listen(port, () => process.stdout.write(`Listening on port ${port} ...\n******************** \n`));
 export default app;
