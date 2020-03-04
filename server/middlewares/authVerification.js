@@ -10,7 +10,6 @@ export const verifyAuth = async (req, res, next) => {
   }
   try {
     const userId = userIdFromToken(authToken);
-
     const user = await User.findOne({ _id: userId });
     if (!user) {
       return responses.errorResponse(
