@@ -1,4 +1,5 @@
 import jobApp from '../models/jobAppModel';
+import jobPost from '../models/jobPostModel';
 import response from '../helpers/responses';
 import { userIdFromToken } from '../helpers/tokens';
 
@@ -8,13 +9,23 @@ const createJobApplication = async (req, res) => {
     const { jobId } = req.params;
     const { proposal } = req.body;
     const jobAppDate = Date.now();
-    const jobApplication = await jobApp.create({
-      jobId,
-      userId,
-      jobAppDate,
-      proposal,
-    });
-    return response.successResponse(res, 201, 'job posted successfully', jobApplication);
+    const job = await jobPost.findById(jobId);
+    if (job) {
+      const jobTitle = job.title;
+      const jobOwnerId = job.jobuserid;
+      const jobOwner = job.organization;
+      const jobApplication = await jobApp.create({
+        jobId,
+        userId,
+        jobOwnerId,
+        jobOwner,
+        jobTitle,
+        jobAppDate,
+        proposal,
+      });
+      return response.successResponse(res, 201, 'job posted successfully', jobApplication);
+    }
+    return response.errorResponse(res, 404, 'JobPost desiered is not found');
   } catch (error) {
     return response.errorResponse(res, 400, error);
   }

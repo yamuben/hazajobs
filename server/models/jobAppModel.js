@@ -2,13 +2,19 @@ import mongoose from 'mongoose';
 
 
 const jobAppSchema = new mongoose.Schema({
-  userId: {
-    type: String,
-  },
   jobId: {
     type: String,
   },
+  userId: {
+    type: String,
+  },
+  jobOwnerId: {
+    type: String,
+  },
   jobOwner: {
+    type: String,
+  },
+  jobTitle: {
     type: String,
   },
   jobAppDate: {
