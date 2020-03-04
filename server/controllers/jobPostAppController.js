@@ -51,10 +51,7 @@ const accecptAplication = async (req, res) => {
     const jobAppPost = await jobApp.findById(jobAppId);
     console.log(`${jobAppPost}-------------------${userData}----------------${jobAppId}`);
     if (jobAppPost && jobAppPost.jobOwnerId === userData) {
-      const acceptedJobApp = await jobApp.updateOne({ id: jobAppId }, { $set: { status: 'accepted' } }, {
-        new: true,
-        runValidators: true,
-      });
+      const acceptedJobApp = await jobApp.updateOne({ _id: jobAppId }, { $set: { status: 'accepted' } });
       return response.successResponse(res, 200, 'Application is accepted', acceptedJobApp);
     }
     return response.errorResponse(res, 404, 'Tha job application is not found');
