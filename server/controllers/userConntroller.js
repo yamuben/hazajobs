@@ -1,12 +1,10 @@
 
 import lodash from 'lodash';
-import dotenv from 'dotenv';
 import { encryptPassword, decryptPassword } from '../helpers/securedPassword';
 import User from '../models/userModels';
 import response from '../helpers/responses';
 import { generateAuthToken, userIdFromToken } from '../helpers/tokens';
 
-dotenv.config();
 const createuser = async (req, res) => {
   try {
     let {
