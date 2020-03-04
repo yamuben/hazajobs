@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import Config from './config/default';
 import jobPostRoute from './routes/jobPostRoutes';
 import userRoutes from './routes/userRoutes';
+import jobPostAppRouter from './routes/jobAppRoute';
 
 const mongoose = require('mongoose');
 
@@ -27,8 +28,9 @@ mongoose
 app.use(bodyParse.json());
 app.use('/api/v1/auth', userRoutes);
 app.use('/api/v1', jobPostRoute);
+app.use('/api/v1', jobPostRoute);
 
 // project server
 const { port } = Config;
-app.listen(port, () => process.stdout.write(`Listening on port ${port} ...\n********************\n`));
+app.listen(port, () => process.stdout.write(`Listening on port ${ port } ...\n********************\n`));
 export default app;
