@@ -49,8 +49,9 @@ const accecptAplication = async (req, res) => {
     const { jobAppId } = req.params;
     const userData = userIdFromToken(req.header('x-auth-token'));
     const jobAppPost = await jobApp.findById(jobAppId);
+    console.log(`${jobAppPost}-------------------${userData}----------------${jobAppId}`);
     if (jobAppPost && jobAppPost.jobOwnerId === userData) {
-      const acceptedJobApp = await jobApp.find({ id: jobAppId }, { $set: { status: 'accepted' } }, {
+      const acceptedJobApp = await jobApp.updateOne({ id: jobAppId }, { $set: { status: 'accepted' } }, {
         new: true,
         runValidators: true,
       });
