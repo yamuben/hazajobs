@@ -6,4 +6,5 @@ const jobPostAppRouter = express.Router();
 jobPostAppRouter.post('/jobApplication/:jobId', verifyAuth, jobPostAppController.createJobApplication);
 jobPostAppRouter.get('/myJobApplications/', verifyAuth, jobPostAppController.myJobApplications);
 jobPostAppRouter.get('/JobApplications/:jobAppId/accept', verifyAuth, jobPostAppController.accecptAplication);
+jobPostAppRouter.get('/JobApplications/:jobAppId/reject', verifyAuth, jobPostAppController.rejectApplication);
 export default jobPostAppRouter;
