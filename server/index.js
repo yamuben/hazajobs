@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParse from 'body-parser';
 import dotenv from 'dotenv';
 import Config from './config/default';
-import jobPostRoute from './routes/jobPostRoutes';
+import jobPostRoute from './routes/jobpostRoutes';
 import userRoutes from './routes/userRoutes';
 import jobPostAppRouter from './routes/jobAppRoute';
 
