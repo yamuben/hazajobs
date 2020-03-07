@@ -8,5 +8,5 @@ jobPostAppRouter.get('/myJobApplications/', verifyAuth, jobPostAppController.myJ
 jobPostAppRouter.get('/myCompanyApplication/', verifyAuth, jobPostAppController.myJobApplications);
 jobPostAppRouter.patch('/JobApplications/:jobAppId/accept', verifyAuth, jobPostAppController.accecptAplication);
 jobPostAppRouter.patch('/JobApplications/:jobAppId/reject', verifyAuth, jobPostAppController.rejectApplication);
-
+jobPostAppRouter.post('/JobApplications/:jobAppId/fedback', verifyAuth, jobPostAppController.rejectApplication);
 export default jobPostAppRouter;
