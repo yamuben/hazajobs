@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-start": " nodemon --exec babel-node ./server/index.js"
+    "dev-start": " nodemon --exec babel-node ./server/index.js",
+    "start": "nodemon --exec babel-node ./server/index.js"
+
   },
   "repository": {
     "type": "git",
