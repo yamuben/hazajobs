@@ -1,5 +1,5 @@
 
-import jobPost from '../models/jobPostModel';
+import jobPost from '../models/jobpostModel';
 import User from '../models/userModels';
 import response from '../helpers/responses';
 import { userIdFromToken } from '../helpers/tokens';
