@@ -43,6 +43,23 @@ const createnewjob = async (req, res) => {
     return response.errorResponse(res, 400, error);
   }
 };
+const editPostedJob = async (req, res) => {
+  try {
+    const userId = userIdFromToken(req.header('x-auth-token'));
+    const { jobId } = req.params;
+    const editableJob = await jobPost.findById(jobId);
+    if (editableJob.jobuserid === userId) {
+      const updatedJobPost = await jobPost.findByIdAndUpdate(jobId, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      return response.successResponse(res, 400, 'Job edited successfully', updatedJobPost);
+    }
+    return response.errorResponse(res, 403, "This job post doesn't belong to you");
+  } catch (err) {
+    return response.errorResponse(res, 500, err);
+  }
+};
 const findALLjobs = async (req, res) => {
   try {
     const jobs = await jobPost.find();
@@ -53,7 +70,7 @@ const findALLjobs = async (req, res) => {
     }
     return response.errorResponse(res, 404, 'Jobs are not available');
   } catch (error) {
-    return response.errorResponse(res, 404, error);
+    return response.errorResponse(res, 500, error);
   }
 };
 const matchingJobs = async (req, res) => {
@@ -64,7 +81,11 @@ const matchingJobs = async (req, res) => {
       const userJobs = await jobPost.find({
         $or: [ { 'jobqualification.first': user.skills.first }, { 'jobqualification.second': user.skills.second }, { 'joblocation.province': user.location.province }, { 'joblocation.district': user.location.district }, { 'joblocation.center': user.location.center } ],
       });
-      if (userJobs.length) { return response.successResponse(res, 200, 'Jobs matching your data', userJobs); }
+      if (userJobs.length) {
+        const sortedUserJobs = userJobs.sort((a, b) => (new Date(b.jobcreatedat)).getTime()
+          - (new Date(a.jobcreatedat).getTime()));
+        return response.successResponse(res, 200, 'Jobs matching your data', sortedUserJobs);
+      }
       return response.errorResponse(res, 404, 'Jobs matches with your data are not available');
     }
     return response.errorResponse(res, 401, 'You are not a user');
@@ -92,17 +113,20 @@ const searchInJobs = async (req, res) => {
     const { searchParameter } = req.params;
     const searchResult = await jobPost.find({
       $or: [
-        { 'joblocation.province': { $regex: `.*${ searchParameter }.*` } },
-        { 'joblocation.district': { $regex: `.*${ searchParameter }.*` } },
-        { 'joblocation.center': { $regex: `.*${ searchParameter }.*` } },
-        { 'jobqualification.first': { $regex: `.*${ searchParameter }.*` } },
-        { 'jobqualification.second': { $regex: `.*${ searchParameter }.*` } },
+        { organization: { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.province': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.district': { $regex: `.*${searchParameter}.*` } },
+        { 'joblocation.center': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.first': { $regex: `.*${searchParameter}.*` } },
+        { 'jobqualification.second': { $regex: `.*${searchParameter}.*` } },
       ],
     });
-    if (searchInJobs.length === 0) {
-      return response.errorResponse(res, 404, 'job is not found');
+    if (searchResult.length) {
+      const sortedSearchedJobs = searchResult.sort((a, b) => (new Date(b.jobcreatedat)).getTime()
+        - (new Date(a.jobcreatedat).getTime()));
+      return response.successResponse(res, 200, 'job successfully retrieved ', sortedSearchedJobs);
     }
-    return response.successResponse(res, 200, 'job successfully retrieved ', searchResult);
+    return response.errorResponse(res, 404, 'job is not found');
   } catch (error) {
     return response.errorResponse(res, 500, error);
   }
@@ -110,10 +134,11 @@ const searchInJobs = async (req, res) => {
 const searchYourJobPost = async (req, res) => {
   try {
     const userId = userIdFromToken(req.header('x-auth-token'));
-    console.log(userId);
     const companiesPostedJob = await jobPost.find({ jobuserid: userId });
     if (companiesPostedJob.length) {
-      return response.successResponse(res, 200, 'Job posted are available', companiesPostedJob);
+      const sortedSearchedJobPost = companiesPostedJob.sort((a, b) => (new Date(b.jobcreatedat))
+        .getTime() - (new Date(a.jobcreatedat).getTime()));
+      return response.successResponse(res, 200, 'Job posted are available', sortedSearchedJobPost);
     }
     return response.errorResponse(res, 404, 'Jobs posted are not available');
   } catch (err) {
@@ -121,5 +146,11 @@ const searchYourJobPost = async (req, res) => {
   }
 };
 export default {
-  createnewjob, findALLjobs, matchingJobs, deleteJob, searchInJobs, searchYourJobPost,
+  createnewjob,
+  editPostedJob,
+  findALLjobs,
+  matchingJobs,
+  deleteJob,
+  searchInJobs,
+  searchYourJobPost,
 };
